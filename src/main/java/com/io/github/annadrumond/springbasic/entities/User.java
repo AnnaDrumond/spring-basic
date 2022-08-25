@@ -1,12 +1,19 @@
 package com.io.github.annadrumond.springbasic.entities;
 
+import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "USER_TABLE")
 public class User implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
     private String email;
     private String phone;
     private String password;
