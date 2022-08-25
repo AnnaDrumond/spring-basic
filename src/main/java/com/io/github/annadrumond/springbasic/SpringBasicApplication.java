@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringBasicApplication {
 
     public static void main(String[] args) {
+        // atalho : psvm + enter
         SpringApplication.run(SpringBasicApplication.class, args);
     }
 
