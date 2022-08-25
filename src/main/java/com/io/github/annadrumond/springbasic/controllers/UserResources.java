@@ -1,4 +1,4 @@
-package com.io.github.annadrumond.springbasic.resources;
+package com.io.github.annadrumond.springbasic.controllers;
 
 import com.io.github.annadrumond.springbasic.entities.User;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 //@RestController que combina o comportamento do @Controller e do @ResponseBody.
 //
 public class UserResources {
-    // Os resources são os serviçols REST/ Controllers
+    // Os resources são os serviços REST/ Controllers
 
     /**
      * O ResponseEntity é Generics <T> e no lugar do T devo colocar o tipo de resposta que espero
