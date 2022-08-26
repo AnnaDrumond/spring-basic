@@ -27,6 +27,7 @@ public class UserService {
         //https://www.baeldung.com/java-optional
         Optional<User> userOptional = userRepository.findById(id);
         // O método get() abaixo é da classe Optional e vai retonar o objeto User armazenado em userOptional
+        // Se busco algo que não existe na minha BD H2, o Optional fica com valor EMPTY
         if (userOptional.isEmpty()){
             return null;
         }

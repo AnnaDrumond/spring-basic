@@ -1,74 +1,42 @@
 package com.io.github.annadrumond.springbasic.entities;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER_TABLE")
+@NoArgsConstructor
+@RequiredArgsConstructor // Neste caso cada um dos atributos que QUERO no construtor devem ter a annotation  @NonNull
+@Slf4j //fazer log da execução dos nossos serviços
+@ToString (of = {"name" , "id"})// Quero toString somente destes
+//Caso eu quisesse excluir alguns seria exclude={"name", "phone"}, por exemplo
+//@EqualsAndHashCode(of={"id"}) - dentro coloco o quero como parametro de comparação
 public class User implements Serializable {
 
+    //https://medium.com/collabcode/projeto-lombok-escrevendo-menos-c%C3%B3digo-em-java-8fc87b379209
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
+    @Getter private Long id;
+    @Getter @Setter @NonNull private String name;
+    @Getter @Setter @NonNull private String email;
+    @Getter @Setter @NonNull private String phone;
+    @Getter @Setter @NonNull private String password;
 
-    private String email;
-    private String phone;
-    private String password;
-
-
-    public User() {
-    }
-
-    public User(Long id, String name, String email, String phone, String password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    //Um cliente tem vários pedidos
+    @Getter
+    @OneToMany(mappedBy = "client")
+    @JsonIgnore
+   // @ToString.Exclude // não quero esta informação no meu toString
+    private Set<Order> orders = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -82,6 +50,4 @@ public class User implements Serializable {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-
 }
