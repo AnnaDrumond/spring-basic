@@ -2,6 +2,7 @@ package com.io.github.annadrumond.springbasic.configurations;
 
 import com.io.github.annadrumond.springbasic.entities.Order;
 import com.io.github.annadrumond.springbasic.entities.User;
+import com.io.github.annadrumond.springbasic.entities.enums.OrderStatus;
 import com.io.github.annadrumond.springbasic.repositories.OrderRepository;
 import com.io.github.annadrumond.springbasic.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,9 @@ public class TestConfiguration implements CommandLineRunner {
 
         //Se eu quiser a data do sistema chamo o Instant.now()
         //A data/hora estrá em UTC
-        Order order1 = new Order( Instant.now(), user1);
-        Order order2 = new Order( Instant.parse("2019-07-21T03:42:10Z"), user2);
-        Order order3 = new Order( Instant.parse("2019-07-22T15:21:22Z"), user1);
+        Order order1 = new Order( Instant.now(), OrderStatus.PAID, user1);
+        Order order2 = new Order( Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT,user2);
+        Order order3 = new Order( Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.SHIPPED, user1);
         orderRepository.saveAll(Arrays.asList(order1,order2,order3));
 
     }

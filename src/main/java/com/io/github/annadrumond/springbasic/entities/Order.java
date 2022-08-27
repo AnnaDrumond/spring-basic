@@ -1,6 +1,7 @@
 package com.io.github.annadrumond.springbasic.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.io.github.annadrumond.springbasic.entities.enums.OrderStatus;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +24,8 @@ public class Order implements Serializable {
     //Para formatar a data e garantir que esta seja exibida no formato ISO8601
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     @Getter @Setter @NonNull private Instant moment;
+    @Enumerated(EnumType.STRING)
+    @Getter @Setter @NonNull private OrderStatus orderStatus;
 
     //Um pedido tem um cliente
     //Cliente é o dono da relação
