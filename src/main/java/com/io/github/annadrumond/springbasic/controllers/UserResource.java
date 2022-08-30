@@ -30,7 +30,7 @@ public class UserResource {
     }
 
     @GetMapping(value = "/find/by/{userId}")
-    public ResponseEntity<User> findAll(@PathVariable Long userId){
+    public ResponseEntity<User> findById(@PathVariable Long userId){
 
         User userFound = userService.findById(userId);
 

@@ -1,8 +1,10 @@
 package com.io.github.annadrumond.springbasic.configurations;
 
+import com.io.github.annadrumond.springbasic.entities.Category;
 import com.io.github.annadrumond.springbasic.entities.Order;
 import com.io.github.annadrumond.springbasic.entities.User;
 import com.io.github.annadrumond.springbasic.entities.enums.OrderStatus;
+import com.io.github.annadrumond.springbasic.repositories.CategoryRepository;
 import com.io.github.annadrumond.springbasic.repositories.OrderRepository;
 import com.io.github.annadrumond.springbasic.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class TestConfiguration implements CommandLineRunner {
     private UserRepository userRepository;
 
     @Autowired // seria similar ao @Inject do Context and Dependency Injection (CDI)
+    private CategoryRepository categoryRepository;
+
+    @Autowired // seria similar ao @Inject do Context and Dependency Injection (CDI)
     private OrderRepository orderRepository;
 
     //Agora preciso garantir que a bd seja populada assim que o meu programa começar a correr
@@ -35,6 +40,13 @@ public class TestConfiguration implements CommandLineRunner {
     //Isso obriga a implmentação do método run() - tudo que estiver dentro deste método será executado quando a app for iniciada
     @Override
     public void run(String... args) throws Exception {
+
+        //não estou mandando o id, pois será gerado pela bd
+        Category cat1 = new Category("Electronics");
+        Category cat2 = new Category( "Books");
+        Category cat3 = new Category("Computers");
+        categoryRepository.saveAll(Arrays.asList(cat1,cat2,cat3));
+
         //não estou mandando o id, pois será gerado pela bd
         User user1 = new User("Maria Brown", "maria@gmail.com", "988888888", "123456");
         User user2 = new User("Alex Green", "alex@gmail.com", "977777777", "123456");
@@ -48,6 +60,9 @@ public class TestConfiguration implements CommandLineRunner {
         Order order2 = new Order( Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT,user2);
         Order order3 = new Order( Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.SHIPPED, user1);
         orderRepository.saveAll(Arrays.asList(order1,order2,order3));
+
+
+
 
     }
 }

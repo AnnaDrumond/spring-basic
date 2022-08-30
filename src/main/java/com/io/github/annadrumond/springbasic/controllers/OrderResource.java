@@ -31,7 +31,7 @@ public class OrderResource {
     }
 
     @GetMapping(value = "/find/by/{orderId}")
-    public ResponseEntity<Order> findAll(@PathVariable Long orderId){
+    public ResponseEntity<Order> findById(@PathVariable Long orderId){
 
         Order orderFound = orderService.findById(orderId);
 
