@@ -1,7 +1,7 @@
 package com.io.github.annadrumond.springbasic.controllers;
 
-import com.io.github.annadrumond.springbasic.entities.Category;
-import com.io.github.annadrumond.springbasic.services.CategoryService;
+import com.io.github.annadrumond.springbasic.entities.Product;
+import com.io.github.annadrumond.springbasic.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,34 +12,33 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/categories")//definição  da url deste controller
+@RequestMapping(value = "/products")//definição  da url deste controller
 //https://www.baeldung.com/spring-controller-vs-restcontroller
 //@RestController que combina o comportamento do @Controller e do @ResponseBody.
 //è a meu controlador - REST
-public class CategoryResource {
+public class ProductResource {
     // Os resources são os serviços REST/ Controllers
 
     @Autowired
-    private CategoryService categoryService;
+    private ProductService productService;
     /**
      * O ResponseEntity é Generics <T> e no lugar do T devo colocar o tipo de resposta que espero
      * O getMapping indica que é um GET
      */
     @GetMapping // significa que é uma requisição do tipo GET
-    // <List<Category>> é o tipo de retorno
-    public ResponseEntity<List<Category>> findAll(){
-        List <Category> categories = categoryService.findAll();
-        return ResponseEntity.ok().body(categories);
+    // <List<Product>> é o tipo de retorno
+    public ResponseEntity<List<Product>> findAll(){
+        List <Product> products = productService.findAll();
+        return ResponseEntity.ok().body(products);
     }
 
-    //Buscar por id
-    @GetMapping(value = "/find/by/{categoryId}")
-    public ResponseEntity<Category> findById(@PathVariable Long categoryId){
+    @GetMapping(value = "/find/by/{productId}")
+    public ResponseEntity<Product> findById(@PathVariable Long productId){
 
-        Category categoryFound = categoryService.findById(categoryId);
+        Product productFound = productService.findById(productId);
 
-        if (categoryFound != null){
-            return ResponseEntity.ok().body(categoryFound);
+        if (productFound != null){
+            return ResponseEntity.ok().body(productFound);
         }
         return ResponseEntity.status(404).build();
     }

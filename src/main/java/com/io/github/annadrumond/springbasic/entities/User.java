@@ -36,6 +36,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "client")
     @JsonIgnore
    // @ToString.Exclude // não quero esta informação no meu toString
+    //Instanciar para garantir que a coleção comece vazia, porém NÂO NULA
     private Set<Order> orders = new HashSet<>();
 
     @Override

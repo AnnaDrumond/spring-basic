@@ -11,35 +11,39 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor // Construtor vazio
+@NoArgsConstructor
 @RequiredArgsConstructor // Neste caso cada um dos atributos que QUERO no construtor devem ter a annotation  @NonNull
 @Slf4j //fazer log da execução dos nossos serviços
-@Table(name = "CATEGORY_TABLE")
-public class Category implements Serializable {
+@Table(name = "PRODUCT_TABLE")
+public class Product implements Serializable {
 
-    @Id
+    @Id  @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private Long id;
+    @Getter @Setter @NonNull private String name;
+    @Getter @Setter @NonNull private String description;
+    @Getter @Setter @NonNull private double price;
+    @Getter @Setter @NonNull private String imgUrl;
 
-    @Getter @Setter
-    @NonNull
-    private String name;
 
     //Um produto pode ter várias categorias
     @Getter
-    @JsonIgnore
-    @ManyToMany (mappedBy = "categories")
+    @ManyToMany
+    //joinColumns = @JoinColumn(name="product_id") define a FK da
+    //inverseJoinColumns define a FK da outra entidade (Category)
+    @JoinTable(name = "PRODUCT_CATEGORY",
+            joinColumns = @JoinColumn(name="product_id"),
+            inverseJoinColumns = @JoinColumn(name="category_id"))
     //O Set vai garantir que não terei mais do que um produto de uma mesma categoria
     //O mesmo produto não pode ter a mesma categoria, mais de uma vez
-    private Set<Product> products = new HashSet<>();
+    private Set<Category> categories = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return id.equals(category.id);
+        Product product = (Product) o;
+        return id.equals(product.id);
     }
 
     @Override

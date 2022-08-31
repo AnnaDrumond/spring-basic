@@ -26,8 +26,8 @@ public class OrderResource {
     @GetMapping // significa que é uma requisição do tipo GET
     // <List<User>> é o tipo de retorno
     public ResponseEntity<List<Order>> findAll(){
-        List <Order> users = orderService.findAll();
-        return ResponseEntity.ok().body(users);
+        List <Order> orders = orderService.findAll();
+        return ResponseEntity.ok().body(orders);
     }
 
     @GetMapping(value = "/find/by/{orderId}")

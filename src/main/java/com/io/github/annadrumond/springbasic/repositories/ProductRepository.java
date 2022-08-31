@@ -1,8 +1,8 @@
 package com.io.github.annadrumond.springbasic.repositories;
 
+import com.io.github.annadrumond.springbasic.entities.Product;
 import com.io.github.annadrumond.springbasic.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * Repositório <a href="https://www.alura.com.br/artigos/primeiros-passos-spring">...</a>
@@ -14,7 +14,7 @@ import org.springframework.data.repository.CrudRepository;
  */
 // JpaRepository<User,Long> - entidade,chave primária
 // Não preciso colocar o @Repository pois a minha interface já extends JpaRepository
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface ProductRepository extends JpaRepository<Product,Long> {
 
 
 

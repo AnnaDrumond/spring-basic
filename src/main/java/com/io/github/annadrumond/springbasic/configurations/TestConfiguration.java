@@ -2,10 +2,12 @@ package com.io.github.annadrumond.springbasic.configurations;
 
 import com.io.github.annadrumond.springbasic.entities.Category;
 import com.io.github.annadrumond.springbasic.entities.Order;
+import com.io.github.annadrumond.springbasic.entities.Product;
 import com.io.github.annadrumond.springbasic.entities.User;
 import com.io.github.annadrumond.springbasic.entities.enums.OrderStatus;
 import com.io.github.annadrumond.springbasic.repositories.CategoryRepository;
 import com.io.github.annadrumond.springbasic.repositories.OrderRepository;
+import com.io.github.annadrumond.springbasic.repositories.ProductRepository;
 import com.io.github.annadrumond.springbasic.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -35,6 +37,9 @@ public class TestConfiguration implements CommandLineRunner {
     @Autowired // seria similar ao @Inject do Context and Dependency Injection (CDI)
     private OrderRepository orderRepository;
 
+    @Autowired // seria similar ao @Inject do Context and Dependency Injection (CDI)
+    private ProductRepository productRepository;
+
     //Agora preciso garantir que a bd seja populada assim que o meu programa começar a correr
     //Neste exemplo vamos fazer a classe implementar a interface ComandLineRunner
     //Isso obriga a implmentação do método run() - tudo que estiver dentro deste método será executado quando a app for iniciada
@@ -47,11 +52,27 @@ public class TestConfiguration implements CommandLineRunner {
         Category cat3 = new Category("Computers");
         categoryRepository.saveAll(Arrays.asList(cat1,cat2,cat3));
 
+        Product product1 = new Product( "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
+        Product product2 = new Product( "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
+        Product product3 = new Product( "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
+        Product product4 = new Product( "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
+        Product product5 = new Product( "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
+        productRepository.saveAll(Arrays.asList(product1,product2,product3,product4,product5));
+
+        //Fazer algumas associações
+        product1.getCategories().add(cat2);
+        product2.getCategories().add(cat1);
+        product2.getCategories().add(cat3);
+        product3.getCategories().add(cat3);
+        product4.getCategories().add(cat3);
+        product5.getCategories().add(cat2);
+        //salvar as entidades produtos, agora com as ssociações que foram inseridas
+        productRepository.saveAll(Arrays.asList(product1,product2,product3,product4,product5));
+
         //não estou mandando o id, pois será gerado pela bd
         User user1 = new User("Maria Brown", "maria@gmail.com", "988888888", "123456");
         User user2 = new User("Alex Green", "alex@gmail.com", "977777777", "123456");
-       // User user3 = new User(1L,"Anna","anna@pt","999","abcd");
-        //O saveAll é um método Java da interface JpaRepositor
+        //O saveAll é um método Java da interface JpaRepository
         userRepository.saveAll(Arrays.asList(user1,user2));
 
         //Se eu quiser a data do sistema chamo o Instant.now()
