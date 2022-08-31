@@ -1,14 +1,8 @@
 package com.io.github.annadrumond.springbasic.configurations;
 
-import com.io.github.annadrumond.springbasic.entities.Category;
-import com.io.github.annadrumond.springbasic.entities.Order;
-import com.io.github.annadrumond.springbasic.entities.Product;
-import com.io.github.annadrumond.springbasic.entities.User;
+import com.io.github.annadrumond.springbasic.entities.*;
 import com.io.github.annadrumond.springbasic.entities.enums.OrderStatus;
-import com.io.github.annadrumond.springbasic.repositories.CategoryRepository;
-import com.io.github.annadrumond.springbasic.repositories.OrderRepository;
-import com.io.github.annadrumond.springbasic.repositories.ProductRepository;
-import com.io.github.annadrumond.springbasic.repositories.UserRepository;
+import com.io.github.annadrumond.springbasic.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +33,9 @@ public class TestConfiguration implements CommandLineRunner {
 
     @Autowired // seria similar ao @Inject do Context and Dependency Injection (CDI)
     private ProductRepository productRepository;
+
+    @Autowired // seria similar ao @Inject do Context and Dependency Injection (CDI)
+    private OrderItemRepository orderItemRepository;
 
     //Agora preciso garantir que a bd seja populada assim que o meu programa começar a correr
     //Neste exemplo vamos fazer a classe implementar a interface ComandLineRunner
@@ -82,8 +79,10 @@ public class TestConfiguration implements CommandLineRunner {
         Order order3 = new Order( Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.SHIPPED, user1);
         orderRepository.saveAll(Arrays.asList(order1,order2,order3));
 
-
-
-
+        OrderItem orderItem1 = new OrderItem(order1, product1, 2, product1.getPrice());
+        OrderItem orderItem2 = new OrderItem(order1, product3, 1, product3.getPrice());
+        OrderItem orderItem3 = new OrderItem(order2, product3, 2, product3.getPrice());
+        OrderItem orderItem4 = new OrderItem(order3, product5, 2, product5.getPrice());
+        orderItemRepository.saveAll(Arrays.asList(orderItem1,orderItem2,orderItem3,orderItem4));
     }
 }

@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -32,6 +34,13 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinColumn(name = "client_id")
     @Getter @Setter @NonNull User client;
+
+    @Getter
+    @OneToMany(mappedBy = "compositeId.order")
+    // OrderItem tem o compositeId e esteé que está associado ao order
+    //Para evitar erro lazily neste associação de via dupla, será necessário a anottation @JsonIgnore
+    // linha 37 em OrderIten - porque é este getOrder que de fato estaria chamando o order
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
