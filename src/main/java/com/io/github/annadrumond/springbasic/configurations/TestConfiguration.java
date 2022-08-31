@@ -84,5 +84,11 @@ public class TestConfiguration implements CommandLineRunner {
         OrderItem orderItem3 = new OrderItem(order2, product3, 2, product3.getPrice());
         OrderItem orderItem4 = new OrderItem(order3, product5, 2, product5.getPrice());
         orderItemRepository.saveAll(Arrays.asList(orderItem1,orderItem2,orderItem3,orderItem4));
+
+        Payment payment1 = new Payment(Instant.parse("2019-07-21T21:42:10Z"), order1);
+        //Para salvar o objeto dependente ( que não é o dono da relação) em um OneToOne, não chamo o repository do próprio objeto e sim,
+        //Vamos fazer a associação em memória e depois, salvar de novo o objeto dono da relação
+        order1.setPayment(payment1);
+        orderRepository.save(order1);
     }
 }

@@ -37,10 +37,23 @@ public class Order implements Serializable {
 
     @Getter
     @OneToMany(mappedBy = "compositeId.order")
-    // OrderItem tem o compositeId e esteé que está associado ao order
+    // OrderItem tem o compositeId e este é que está associado ao order
     //Para evitar erro lazily neste associação de via dupla, será necessário a anottation @JsonIgnore
     // linha 37 em OrderIten - porque é este getOrder que de fato estaria chamando o order
     private Set<OrderItem> orderItems = new HashSet<>();
+
+    //Na OnetoOne se a Order tiver id 5, o Payment também será gerado com o id 5
+    //
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @Getter @Setter private Payment payment;
+
+    public Double getTotalOrder(){
+        double sum = 0.0;
+        for (OrderItem orderItem: orderItems ) {
+            sum += orderItem.getSubTotal();
+        }
+        return sum;
+    }
 
     @Override
     public boolean equals(Object o) {

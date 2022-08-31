@@ -33,4 +33,27 @@ public class UserService {
         }
         return userOptional.get();
     }
+
+    //Inserir novos utilizadores e retornar o User adicionado na bd
+    public User insertUser(User user){
+        return userRepository.save(user);// este método save() de JPARepository por default já retorna o objeto salvo
+    }
+
+    public void deleteUser(Long idUser){
+        userRepository.deleteById(idUser);//  método de JPARepository
+    }
+
+    public User updateUser(Long idUser, User userNewData){
+        User userUpdated = userRepository.getReferenceById(idUser);// Não vai a bd
+        updateDataUser(userUpdated, userNewData);
+        return userRepository.save(userUpdated);
+    }
+
+    private void updateDataUser(User userUpdated, User userNewData) {
+        userUpdated.setName(userNewData.getName());
+        userUpdated.setEmail(userNewData.getEmail());
+        userUpdated.setPhone(userNewData.getPhone());
+        //no momento não está permitido alterar a password
+    }
+
 }

@@ -38,6 +38,23 @@ public class Product implements Serializable {
     //O mesmo produto não pode ter a mesma categoria, mais de uma vez
     private Set<Category> categories = new HashSet<>();
 
+    //Produto está associado a OrderItem e este por sua vez está associado a Order
+    //Preciso aceder aqui em Product, uma lista de orders
+    // OrderItem tem o compositeId e este é que está associado ao product
+    @OneToMany(mappedBy = "compositeId.product")
+    private Set<OrderItem> orderItems = new HashSet<>();
+
+    //Método criado manualmente
+    //Como aqui eu somente tenho acesso a coleção de orderItems, basta percorrer a mesma extraindo as orders
+    @JsonIgnore //corta/interrompe a associação de via dupla, para não gerar erros lazily
+    public Set<Order> getOrderItems() {
+        Set<Order> orders = new HashSet<>();
+        for (OrderItem orderItem: orderItems) {
+            orders.add(orderItem.getOrder());
+        }
+        return orders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
