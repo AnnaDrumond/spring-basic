@@ -33,13 +33,8 @@ public class UserResource {
 
     @GetMapping(value = "/find/by/{userId}")
     public ResponseEntity<User> findById(@PathVariable Long userId){
-
         User userFound = userService.findById(userId);
-
-        if (userFound != null){
-            return ResponseEntity.ok().body(userFound);
-        }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.ok().body(userFound);
     }
 
 

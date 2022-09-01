@@ -4,6 +4,7 @@ package com.io.github.annadrumond.springbasic.services;
 
 import com.io.github.annadrumond.springbasic.entities.User;
 import com.io.github.annadrumond.springbasic.repositories.UserRepository;
+import com.io.github.annadrumond.springbasic.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +30,11 @@ public class UserService {
         // O método get() abaixo é da classe Optional e vai retonar o objeto User armazenado em userOptional
         // Se busco algo que não existe na minha BD H2, o Optional fica com valor EMPTY
         if (userOptional.isEmpty()){
-            return null;
+            throw new ResourceNotFoundException(id);
         }
-        return userOptional.get();
+        // orElseThrow() vai tentar obter o objeto armazenado dentro do Optional, caso não exista um objeto
+        // será lançada a exceção
+        return userOptional.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     //Inserir novos utilizadores e retornar o User adicionado na bd
