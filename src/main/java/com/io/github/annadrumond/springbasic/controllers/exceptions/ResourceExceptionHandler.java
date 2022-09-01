@@ -1,6 +1,7 @@
 package com.io.github.annadrumond.springbasic.controllers.exceptions;
 
 import com.io.github.annadrumond.springbasic.services.UserService;
+import com.io.github.annadrumond.springbasic.services.exceptions.DatabaseException;
 import com.io.github.annadrumond.springbasic.services.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.Level;
@@ -36,9 +37,17 @@ public class ResourceExceptionHandler {
                                            HttpServletRequest httpServletRequest){
 
        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardError(Instant.now(), HttpStatus.NOT_FOUND.value(),
-               resourceNotFoundException.getMessage(), httpServletRequest.getRequestURI()));
+               resourceNotFoundException.getMessage(), "Resource Not Found", httpServletRequest.getRequestURI()));
+
     }
 
 
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> dataBaseException(DatabaseException databaseException,
+                                                          HttpServletRequest httpServletRequest) {
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StandardError(Instant.now(), HttpStatus.BAD_REQUEST.value(),
+                databaseException.getMessage(), "Data base error", httpServletRequest.getRequestURI()));
+    }
 
 }

@@ -4,10 +4,14 @@ package com.io.github.annadrumond.springbasic.services;
 
 import com.io.github.annadrumond.springbasic.entities.User;
 import com.io.github.annadrumond.springbasic.repositories.UserRepository;
+import com.io.github.annadrumond.springbasic.services.exceptions.DatabaseException;
 import com.io.github.annadrumond.springbasic.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,13 +47,29 @@ public class UserService {
     }
 
     public void deleteUser(Long idUser){
-        userRepository.deleteById(idUser);//  método de JPARepository
+        try {
+            userRepository.deleteById(idUser);//  método de JPARepository
+
+        } catch (EmptyResultDataAccessException emptyResultDataAccessException){
+            throw new ResourceNotFoundException(idUser);
+
+        } catch (DataIntegrityViolationException dataIntegrityViolationException){
+            throw new DatabaseException(dataIntegrityViolationException.getMessage());
+        };
     }
 
     public User updateUser(Long idUser, User userNewData){
-        User userUpdated = userRepository.getReferenceById(idUser);// Não vai a bd
-        updateDataUser(userUpdated, userNewData);
-        return userRepository.save(userUpdated);
+        try {
+            //https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaRepository.html
+            //getReferenceById(ID id)
+            //Retorna uma referência à entidade com o identificador fornecido.
+            User userUpdated = userRepository.getReferenceById(idUser);// Não vai a bd
+            updateDataUser(userUpdated, userNewData);
+            return userRepository.save(userUpdated);
+
+        }catch (EntityNotFoundException entityNotFoundException){
+            throw new ResourceNotFoundException(idUser);
+        }
     }
 
     private void updateDataUser(User userUpdated, User userNewData) {
