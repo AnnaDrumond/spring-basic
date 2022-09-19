@@ -17,6 +17,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-basic</name>
     <description>spring-basic</description>
+    
     <properties>
         <java.version>11</java.version>
     </properties>
